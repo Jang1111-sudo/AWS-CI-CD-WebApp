@@ -1,10 +1,9 @@
 version: 0.0
 os: linux
 
-
 files:
-  - source: .
-  - destination: /var/www/html
+  - source: index.html
+  - destination: /var/www/index.html
 
 hooks:
   AfterInstall:
