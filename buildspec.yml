@@ -4,7 +4,7 @@ phases:
   build:
     commands:
       - echo "Build started"
-      - echo "Nothing to build for static site"
+        echo "Nothing to build for static site"
 
 artifacts:
   files:
