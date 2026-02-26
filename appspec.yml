@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: index.html
-  - destination: /var/www/index.html
+  - destination: /usr/share/nginx/html/index.html
 
 hooks:
   AfterInstall:
