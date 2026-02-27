@@ -1,7 +1,8 @@
 #!/bin/bash
-set -e
-dnf install -y nginx
+set -euxo pipefail
+if ! rpm -q nginx; then
+	dnf install -y nginx
+fi
 mkdir -p /usr/share/nginx/html
-chown -R nginx:nginx /usr/share/nginx/html || true
 systemctl enable nginx
 systemctl start nginx
