@@ -1,16 +1,24 @@
 #!/bin/bash
 set -euxo pipefail
-if rpm -q nginx; then
-	systemctl stop nginx || true
-	dnf remove -y nginx || true
+
+echo "===install.sh start==="
+date
+whoami
+pwd
+ls -al
+
+#install nginx : if already installed it, skip
+if ! rpm -q nginx > /dev/null 2>&1; then
+	dnf clean all || true
+	rm -rf /var/cache/dnf/* || true
+	dnf -y install nginx
+else
+	echo "nginx already installed"
 fi
 
-rm -rf /var/cache/dnf/* || true
-rm -f /var/lib/rpm/__db* || true
-rpm --rebuilddb || true
-
-dnf -y install nginx
-
 mkdir -p /usr/share/nginx/html
+#there could not be nginx user. -> even if you failed it, continue
+id nginx || true
+chown -R nginx:nginx /usr/share/nginx/html || true
 systemctl enable nginx
 systemctl start nginx
