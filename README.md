@@ -5,6 +5,8 @@ This project implements an end-to-end CI/CD pipeline on AWS. A simple static web
 
 Compared to Projects 1 and 2, Project 3 took significantly longer because it introduced many new, real-world deployment concepts (CodeDeploy lifecycle, AppSpec rules, agent troubleshooting, Linux package edge cases on Amazon Linux 2023, and ASG-safe idempotent scripts). A large portion of the work was debugging failures during deployment and making the deployment process stable for newly launched instances.
 
+
+
 ---
 
 ## What I Built
@@ -150,16 +152,19 @@ This is the part that made Project 3 much harder than Projects 1–2.
 
 ### Issue C — Nginx not installed / install hook not taking effect
 **Symptoms**
-- `nginx` command not found
-- `systemctl status nginx` shows unit not found
+-CodeDeploy deployment failed with:
+
+scripts/install.sh run as user root failed with exit code 1
 
 **Diagnosis**
-- Confirmed that the `AfterInstall` hook did not run successfully.
-- Verified hook logs and script permissions.
+Inspection of the CodeDeploy agent logs revealed that the failure occurred during the nginx installation step executed inside install.sh.
+
+The underlying problem was not the script itself but a filesystem conflict that prevented the nginx RPM package from installing successfully.
+
+Because install.sh exited with a non-zero status, CodeDeploy marked the lifecycle hook as failed.
 
 **Fix**
-- Ensured `install.sh` is executed by CodeDeploy under root.
-- Ensured script is executable and uses correct shebang.
+-After identifying the package installation conflict and fixing the filesystem state, the install script was redesigned to be idempotent and able to repair incorrect instance states before proceeding.
 
 **Lesson**
 - A successful pipeline “Build” does not guarantee “Deploy”; hook scripts are the real deployment.
