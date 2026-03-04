@@ -77,11 +77,17 @@ This project taught me that CI/CD in a scaling environment is mostly about makin
 ## Repository Structure
 
 .
+
 ├── index.html
+
 ├── appspec.yml
+
 ├── buildspec.yml
+
 └── scripts/
+
     ├── install.sh
+    
     └── restart.sh
 
 
