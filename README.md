@@ -226,6 +226,14 @@ Auto Scaling Group launches instances over time; each instance may differ due to
   - repairs known bad states
   - validates config
   - restarts service reliably
+    
+```bash
+#idempotent code
+dnf install nginx nginx-core nginx-filesystem
+mkdir -p /usr/share/nginx/html
+mkdir -p /etc/nginx
+```
+
 
 **Lesson**
 - ASG environments require “self-healing” automation.
