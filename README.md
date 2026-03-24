@@ -259,3 +259,6 @@ On an instance:
 sudo nginx -t
 sudo systemctl status nginx --no-pager -l
 curl localhost
+
+👨‍💻 Author
+Tae Young Jang
